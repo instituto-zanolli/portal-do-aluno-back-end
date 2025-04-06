@@ -1,0 +1,9 @@
+spring.application.name=zanolli-backend
+
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=
+spring.jpa.show-sql=
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=
