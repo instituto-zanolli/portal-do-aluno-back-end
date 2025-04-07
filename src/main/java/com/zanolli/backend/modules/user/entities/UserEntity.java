@@ -20,7 +20,8 @@ public class UserEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @Column(name = "user_id")
+    private UUID userId;
     
     private String name;
 
@@ -53,12 +54,12 @@ public class UserEntity {
     @UpdateTimestamp
     private LocalDate updated_at;
 
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getName() {

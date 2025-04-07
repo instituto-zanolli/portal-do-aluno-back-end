@@ -8,17 +8,18 @@ public class EstiloEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "estilo_id")
+    private Long estiloId;
 
     @Column(unique = true)
     private String description;
 
-    public Long getId() {
-        return id;
+    public Long getEstiloId() {
+        return estiloId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEstiloId(Long estiloId) {
+        this.estiloId = estiloId;
     }
 
     public String getDescription() {

@@ -40,7 +40,7 @@ public class AuthService {
         
         var claims = JwtClaimsSet.builder()
                 .issuer("back")
-                .subject(userEntity.get().getId().toString())
+                .subject(userEntity.get().getUserId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
                 .build();

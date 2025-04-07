@@ -23,7 +23,7 @@ public class EstiloService {
         Optional<EstiloEntity> estilo = estiloRepository.findByDescription(estiloRequestDto.description());
 
         if(estilo.isPresent()) {
-            throw new EstiloConflictException("Este Estilo já está inserido na base de dados.");
+            throw new EstiloConflictException("Este estilo já está inserido na base de dados.");
         }
 
         EstiloEntity estiloEntity = new EstiloEntity();
