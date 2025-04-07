@@ -19,7 +19,7 @@ public class NaipeService {
         this.naipeRepository = naipeRepository;
     }
 
-    public NaipeEntity registerNaipeService (@RequestBody @Valid NaipeRequestDto naipeRequestDto) {
+    public NaipeEntity registerNaipeService(@RequestBody @Valid NaipeRequestDto naipeRequestDto) {
         Optional<NaipeEntity> descriptionValidation = naipeRepository.findByDescription((naipeRequestDto.description()));
 
         if(descriptionValidation.isPresent()) {

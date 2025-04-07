@@ -23,4 +23,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionFilters> handleNaipeConflict(NaipeConflictException exception) {
         return buildConflictResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ExceptionFilters> handleEmailNotFound(EmailNotFoundException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
+    
+    @ExceptionHandler(EmailConflictException.class)
+    public ResponseEntity<ExceptionFilters> handleEmailConflict(EmailConflictException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
 }
