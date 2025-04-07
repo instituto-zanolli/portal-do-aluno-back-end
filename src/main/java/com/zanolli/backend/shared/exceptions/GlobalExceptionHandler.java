@@ -33,4 +33,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionFilters> handleEmailConflict(EmailConflictException exception) {
         return buildConflictResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(EstiloConflictException.class)
+    public ResponseEntity<ExceptionFilters> handleEstiloConflict(EstiloConflictException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
 }
