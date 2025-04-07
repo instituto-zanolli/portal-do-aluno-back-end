@@ -33,32 +33,21 @@ public class UserService {
     
     public UserEntity createUserService(@RequestBody @Valid UserRequestDto userRequestDto) {
         Optional<UserEntity> validationEmail = userRepository.findByEmail(userRequestDto.email());
-        Optional<NaipeEntity> validationNaipe = naipeRepository.findById(userRequestDto.naipe());
-        Optional<RoleEntity> roleAluno = roleRepository.findByDescription(RoleEntity.Values.aluno.name());
+        NaipeEntity naipe = naipeRepository.findByDescription(userRequestDto.naipe()).orElseThrow(() -> new RuntimeException("Naipe não encontrado."));
+        RoleEntity roleAluno = roleRepository.findByDescription(RoleEntity.Values.aluno.name()).orElseThrow(() -> new RuntimeException("Role não encontrada."));
 
         if(validationEmail.isPresent()) {
             throw new EmailConflictException("Por favor, tente outro email.");
         }
-        
-        if(validationNaipe.isEmpty()) {
-            System.out.println("erro naipe");
-        }
-        
-        if(roleAluno.isEmpty()) {
-            System.out.println("erro role");
-        }
-        
+
         UserEntity user = new UserEntity();
         user.setName(userRequestDto.name());
-        user.setNaipe(validationNaipe.get());
+        user.setNaipe(naipe);
         user.setDataNascimento(userRequestDto.dataNascimento());
         user.setEmail(userRequestDto.email());
         user.setPassword(bCryptPasswordEncoder.encode(userRequestDto.password()));
+        user.setRole(Set.of(roleAluno));
 
-        Set<RoleEntity> roles = new HashSet<>();
-        roles.add(roleAluno.get());
-        user.setRole(roles);
-        
         return userRepository.save(user);
     }
 }

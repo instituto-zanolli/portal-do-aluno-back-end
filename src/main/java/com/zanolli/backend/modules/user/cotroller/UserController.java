@@ -1,9 +1,5 @@
 package com.zanolli.backend.modules.user.cotroller;
 
-import com.zanolli.backend.modules.naipe.dto.NaipeRequestDto;
-import com.zanolli.backend.modules.naipe.dto.NaipeResponseDto;
-import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
-import com.zanolli.backend.modules.naipe.service.NaipeService;
 import com.zanolli.backend.modules.user.dto.UserRequestDto;
 import com.zanolli.backend.modules.user.dto.UserResponseDto;
 import com.zanolli.backend.modules.user.entities.UserEntity;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     
     private final UserService userService;
@@ -25,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
     
-    @PostMapping("/register-user")
+    @PostMapping()
     public ResponseEntity<UserResponseDto> createUserController(@RequestBody @Valid UserRequestDto userRequestDto) {
         UserEntity saved = userService.createUserService(userRequestDto);
         String message = "usuário cadastrado com sucesso!";

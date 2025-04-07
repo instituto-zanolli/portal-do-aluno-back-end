@@ -12,7 +12,7 @@ public record UserRequestDto(
         String name,
 
         @NotNull(message = "Este campo é obrigatório.")
-        Integer naipe,
+        String naipe,
 
         @NotNull(message = "Este campo é obrigatório.")
         Date dataNascimento,

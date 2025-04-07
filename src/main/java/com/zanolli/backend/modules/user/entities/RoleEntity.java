@@ -1,5 +1,6 @@
 package com.zanolli.backend.modules.user.entities;
 
+
 import jakarta.persistence.*;
 
 @Entity
@@ -7,7 +8,7 @@ import jakarta.persistence.*;
 public class RoleEntity {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "role_id")
     private Long roleId;
     

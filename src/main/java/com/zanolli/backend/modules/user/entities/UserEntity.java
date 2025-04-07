@@ -42,7 +42,7 @@ public class UserEntity {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "id"), // id usuário
+            joinColumns = @JoinColumn(name = "user_id"), // id usuário
             inverseJoinColumns = @JoinColumn(name = "role_id") // id role 
     )
     private Set<RoleEntity> role;
