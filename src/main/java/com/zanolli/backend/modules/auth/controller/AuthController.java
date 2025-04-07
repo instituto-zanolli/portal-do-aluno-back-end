@@ -1,28 +1,27 @@
 package com.zanolli.backend.modules.auth.controller;
 
-import com.zanolli.backend.modules.auth.dto.AuthRequest;
-import com.zanolli.backend.modules.auth.dto.AuthResponse;
-import com.zanolli.backend.modules.user.repositories.UserRepository;
+import com.zanolli.backend.modules.auth.dto.AuthRequestDto;
+import com.zanolli.backend.modules.auth.dto.AuthResponseDto;
+import com.zanolli.backend.modules.auth.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/login")
 public class AuthController {
 
-    private final JwtEncoder jwtEncoder;
-    
-    public AuthController(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
-    
-    // @PostMapping()
-    // public ResponseEntity<AuthResponse> loginController(@RequestBody @Valid AuthRequest authRequest) {
-        
-    // }
+
+     @PostMapping("/login")
+     public ResponseEntity<AuthResponseDto> loginController(@RequestBody @Valid AuthRequestDto authRequestDto) {
+        String acessToken = authService.loginService(authRequestDto);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new AuthResponseDto(acessToken));
+     }
 }

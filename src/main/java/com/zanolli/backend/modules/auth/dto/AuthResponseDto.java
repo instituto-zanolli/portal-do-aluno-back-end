@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.auth.dto;
 
-public record AuthResponse(
+public record AuthResponseDto(
         String acessToken
 ) {
 }

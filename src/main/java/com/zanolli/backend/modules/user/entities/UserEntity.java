@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.user.entities;
 
-import com.zanolli.backend.modules.auth.dto.AuthRequest;
+import com.zanolli.backend.modules.auth.dto.AuthRequestDto;
 import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -133,7 +133,7 @@ public class UserEntity {
         this.updated_at = updated_at;
     }
 
-    public boolean isLoginCorrect(@Valid AuthRequest authRequest, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(authRequest.password(), this.password);
+    public boolean isLoginCorrect(@Valid AuthRequestDto authRequestDto, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(authRequestDto.password(), this.password);
     }
 }
