@@ -22,7 +22,7 @@ public class EstiloController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('SCOPE_professor')")
+    @PreAuthorize("hasAuthority('SCOPE_PROFESSOR')")
     public ResponseEntity<EstiloResponseDto> registerEstiloController(@RequestBody @Valid EstiloRegisterRequestDto estiloRegisterRequestDto) {
         EstiloEntity saved = estiloService.registerEstiloService(estiloRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";

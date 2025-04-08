@@ -24,7 +24,7 @@ public class NaipeController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('SCOPE_professor')")
+    @PreAuthorize("hasAuthority('SCOPE_PROFESSOR')")
     public ResponseEntity<NaipeResponseDto> registerNaipeController(@RequestBody @Valid NaipeRegisterRequestDto naipeRegisterRequestDto) {
         NaipeEntity saved = naipeService.registerNaipeService(naipeRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";

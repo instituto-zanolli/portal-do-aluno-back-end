@@ -1,9 +1,18 @@
 spring.application.name=zanolli-backend
 
-spring.datasource.url=
+public.key=classpath:
+private.key=classpath:
+
+role.aluno=
+role.professor=
+
+#spring.sql.init.mode=always
+#spring.jpa.defer-datasource-initialization=true
+
+spring.datasource.url=jdbc:postgresql:
 spring.datasource.username=
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=
-spring.jpa.show-sql=
+spring.jpa.show-sql=true
 
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
