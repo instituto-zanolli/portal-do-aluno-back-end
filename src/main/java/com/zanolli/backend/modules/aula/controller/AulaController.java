@@ -1,6 +1,7 @@
 package com.zanolli.backend.modules.aula.controller;
 
 import com.zanolli.backend.modules.aula.dto.AulaCreateRequestDto;
+import com.zanolli.backend.modules.aula.dto.AulaDto;
 import com.zanolli.backend.modules.aula.dto.AulaFeedResponseDto;
 import com.zanolli.backend.modules.aula.dto.AulaResponseDto;
 import com.zanolli.backend.modules.aula.entity.AulaEntity;
@@ -13,6 +14,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/aula")
@@ -40,5 +42,12 @@ public class AulaController {
             ) {
         AulaFeedResponseDto aulaFeedResponseDto = aulaService.feedService(page, pageSize);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(aulaFeedResponseDto);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ALUNO') or hasAuthority('SCOPE_PROFESSOR')")
+    public ResponseEntity<AulaDto> findAulaByIdController(@PathVariable("id") UUID id) {
+        AulaDto aulaDto = aulaService.findAulaByIdService(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(aulaDto);
     }
 }

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.interfaces.RSAPublicKey;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -75,5 +77,24 @@ public class AulaService {
                 .collect(Collectors.toList());
 
         return new AulaFeedResponseDto(aulaDtoList, page, pageSize);
+    }
+
+    public AulaDto findAulaByIdService(UUID id) {
+        Optional<AulaEntity> aulaEntity = aulaRepository.findById(id);
+
+        if(aulaEntity.isEmpty()) {
+            System.out.println("Aula não encontrada");
+        }
+
+        AulaDto aulaDto = new AulaDto(
+                aulaEntity.get().getName(),
+                aulaEntity.get().getDescription(),
+                aulaEntity.get().getEstilo().getDescription(),
+                aulaEntity.get().getDate(),
+                aulaEntity.get().getStartTime(),
+                aulaEntity.get().getEndTime()
+        );
+
+        return aulaDto;
     }
 }
