@@ -7,6 +7,7 @@ import com.zanolli.backend.modules.naipe.service.NaipeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class NaipeController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('SCOPE_professor')")
     public ResponseEntity<NaipeResponseDto> registerNaipeController(@RequestBody @Valid NaipeRegisterRequestDto naipeRegisterRequestDto) {
         NaipeEntity saved = naipeService.registerNaipeService(naipeRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";

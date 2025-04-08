@@ -23,9 +23,6 @@ public record AulaCreateRequestDto(
         LocalTime startTime,
 
         @NotNull(message = "Campo obrigatório.")
-        LocalTime endTime,
-
-        @NotNull(message = "Campo obrigatório.")
-        UUID professorId
+        LocalTime endTime
 ) {
 }

@@ -10,10 +10,12 @@ import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.repositories.UserRepository;
 import com.zanolli.backend.shared.exceptions.EstiloConflictException;
 import jakarta.validation.Valid;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AulaService {
@@ -28,11 +30,11 @@ public class AulaService {
         this.userRepository = userRepository;
     }
     
-    public AulaEntity createAulaService(@RequestBody @Valid AulaCreateRequestDto aulaCreateRequestDto) {
+    public AulaEntity createAulaService(@RequestBody @Valid AulaCreateRequestDto aulaCreateRequestDto, JwtAuthenticationToken jwt) {
         String name = aulaCreateRequestDto.name() + " | " + aulaCreateRequestDto.startTime();
 
         Optional<EstiloEntity> estiloEntity = estiloRepository.findById(aulaCreateRequestDto.estiloId());
-        Optional<UserEntity> userEntity = userRepository.findById(aulaCreateRequestDto.professorId());
+        Optional<UserEntity> userEntity = userRepository.findById(UUID.fromString(jwt.getName()));
 
         if(estiloEntity.isEmpty()) {
             throw new EstiloConflictException("Este estilo não existe na base de dados.");
@@ -40,7 +42,7 @@ public class AulaService {
 
         AulaEntity aula = new AulaEntity();
         aula.setName(name);
-        aula.setDescription(aula.getDescription());
+        aula.setDescription(aulaCreateRequestDto.description());
         aula.setEstilo(estiloEntity.get());
         aula.setDate(aulaCreateRequestDto.date());
         aula.setStartTime(aulaCreateRequestDto.startTime());

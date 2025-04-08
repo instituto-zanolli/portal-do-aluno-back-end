@@ -5,6 +5,7 @@ import com.zanolli.backend.modules.estilo.dto.EstiloResponseDto;
 import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.estilo.service.EstiloService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class EstiloController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('SCOPE_professor')")
     public ResponseEntity<EstiloResponseDto> registerEstiloController(@RequestBody @Valid EstiloRegisterRequestDto estiloRegisterRequestDto) {
         EstiloEntity saved = estiloService.registerEstiloService(estiloRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";
