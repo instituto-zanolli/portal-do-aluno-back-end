@@ -6,9 +6,9 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
-public record UserRequestDto(
+public record UserCreateRequestDto(
         @NotNull(message = "Este campo é obrigatório.")
-        @Size(min = 1, max = 55, message = "Este campo deve ter entre 2 e 55 caracteres.")
+        @Size(min = 1, max = 55, message = "Este campo deve ter entre 1 e 55 caracteres.")
         String name,
 
         @NotNull(message = "Este campo é obrigatório.")

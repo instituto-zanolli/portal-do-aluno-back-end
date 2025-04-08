@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.estilo.service;
 
-import com.zanolli.backend.modules.estilo.dto.EstiloRequestDto;
+import com.zanolli.backend.modules.estilo.dto.EstiloRegisterRequestDto;
 import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.estilo.repository.EstiloRepository;
 import com.zanolli.backend.shared.exceptions.EstiloConflictException;
@@ -19,15 +19,15 @@ public class EstiloService {
         this.estiloRepository = estiloRepository;
     }
 
-    public EstiloEntity registerEstiloService(@RequestBody @Valid EstiloRequestDto estiloRequestDto) {
-        Optional<EstiloEntity> estilo = estiloRepository.findByDescription(estiloRequestDto.description());
+    public EstiloEntity registerEstiloService(@RequestBody @Valid EstiloRegisterRequestDto estiloRegisterRequestDto) {
+        Optional<EstiloEntity> estilo = estiloRepository.findByDescription(estiloRegisterRequestDto.description());
 
         if(estilo.isPresent()) {
             throw new EstiloConflictException("Este estilo já está inserido na base de dados.");
         }
 
         EstiloEntity estiloEntity = new EstiloEntity();
-        estiloEntity.setDescription(estiloRequestDto.description());
+        estiloEntity.setDescription(estiloRegisterRequestDto.description());
 
         return estiloRepository.save(estiloEntity);
     }

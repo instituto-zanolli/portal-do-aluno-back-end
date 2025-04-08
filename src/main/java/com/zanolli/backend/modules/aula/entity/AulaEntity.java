@@ -18,7 +18,7 @@ public class AulaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "aula_id")
+    @Column(name = "id")
     private UUID aulaId;
 
     private String name;
@@ -38,7 +38,7 @@ public class AulaEntity {
     private LocalTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "professor_id")
     private UserEntity professor;
 
     @CreationTimestamp

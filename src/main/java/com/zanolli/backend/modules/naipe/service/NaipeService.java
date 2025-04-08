@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.naipe.service;
 
-import com.zanolli.backend.modules.naipe.dto.NaipeRequestDto;
+import com.zanolli.backend.modules.naipe.dto.NaipeRegisterRequestDto;
 import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
 import com.zanolli.backend.modules.naipe.repository.NaipeRepository;
 import com.zanolli.backend.shared.exceptions.NaipeConflictException;
@@ -19,15 +19,15 @@ public class NaipeService {
         this.naipeRepository = naipeRepository;
     }
 
-    public NaipeEntity registerNaipeService(@RequestBody @Valid NaipeRequestDto naipeRequestDto) {
-        Optional<NaipeEntity> descriptionValidation = naipeRepository.findByDescription((naipeRequestDto.description()));
+    public NaipeEntity registerNaipeService(@RequestBody @Valid NaipeRegisterRequestDto naipeRegisterRequestDto) {
+        Optional<NaipeEntity> descriptionValidation = naipeRepository.findByDescription((naipeRegisterRequestDto.description()));
 
         if(descriptionValidation.isPresent()) {
             throw new NaipeConflictException("Este naipe já está inserido na base de dados.");
         }
 
         NaipeEntity entity = new NaipeEntity();
-        entity.setDescription(naipeRequestDto.description());
+        entity.setDescription(naipeRegisterRequestDto.description());
 
         return naipeRepository.save(entity);
     }

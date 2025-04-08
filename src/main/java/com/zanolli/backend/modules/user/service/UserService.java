@@ -2,7 +2,7 @@ package com.zanolli.backend.modules.user.service;
 
 import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
 import com.zanolli.backend.modules.naipe.repository.NaipeRepository;
-import com.zanolli.backend.modules.user.dto.UserRequestDto;
+import com.zanolli.backend.modules.user.dto.UserCreateRequestDto;
 import com.zanolli.backend.modules.user.entities.RoleEntity;
 import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.repositories.RoleRepository;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,9 +30,11 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     
-    public UserEntity createUserService(@RequestBody @Valid UserRequestDto userRequestDto) {
-        Optional<UserEntity> validationEmail = userRepository.findByEmail(userRequestDto.email());
-        NaipeEntity naipe = naipeRepository.findById(userRequestDto.naipeId()).orElseThrow(() -> new RuntimeException("Naipe não encontrado."));
+    public UserEntity createUserService(@RequestBody @Valid UserCreateRequestDto userCreateRequestDto) {
+        Optional<UserEntity> validationEmail = userRepository.findByEmail(userCreateRequestDto.email());
+        
+        Optional<NaipeEntity> naipeEntity = naipeRepository.findById(userCreateRequestDto.naipeId());
+        
         RoleEntity roleAluno = roleRepository.findByDescription(RoleEntity.Values.aluno.name()).orElseThrow(() -> new RuntimeException("Role não encontrada."));
 
         if(validationEmail.isPresent()) {
@@ -41,11 +42,11 @@ public class UserService {
         }
 
         UserEntity user = new UserEntity();
-        user.setName(userRequestDto.name());
-        user.setNaipe(naipe);
-        user.setDataNascimento(userRequestDto.dataNascimento());
-        user.setEmail(userRequestDto.email());
-        user.setPassword(bCryptPasswordEncoder.encode(userRequestDto.password()));
+        user.setName(userCreateRequestDto.name());
+        user.setNaipe(naipeEntity.get());
+        user.setDataNascimento(userCreateRequestDto.dataNascimento());
+        user.setEmail(userCreateRequestDto.email());
+        user.setPassword(bCryptPasswordEncoder.encode(userCreateRequestDto.password()));
         user.setRole(Set.of(roleAluno));
 
         return userRepository.save(user);

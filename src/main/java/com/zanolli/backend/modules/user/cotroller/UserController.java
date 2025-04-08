@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.user.cotroller;
 
-import com.zanolli.backend.modules.user.dto.UserRequestDto;
+import com.zanolli.backend.modules.user.dto.UserCreateRequestDto;
 import com.zanolli.backend.modules.user.dto.UserResponseDto;
 import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.service.UserService;
@@ -23,8 +23,8 @@ public class UserController {
     }
     
     @PostMapping()
-    public ResponseEntity<UserResponseDto> createUserController(@RequestBody @Valid UserRequestDto userRequestDto) {
-        UserEntity saved = userService.createUserService(userRequestDto);
+    public ResponseEntity<UserResponseDto> createUserController(@RequestBody @Valid UserCreateRequestDto userCreateRequestDto) {
+        UserEntity saved = userService.createUserService(userCreateRequestDto);
         String message = "usuário cadastrado com sucesso!";
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(message));
     }

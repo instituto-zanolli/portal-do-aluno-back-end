@@ -8,17 +8,17 @@ public class NaipeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "naipe_id")
-    private Long naipeId;
+    @Column(name = "id")
+    private Integer naipeId;
 
     @Column( unique = true)
     private String description;
 
-    public Long getNaipeId() {
+    public Integer getNaipeId() {
         return naipeId;
     }
 
-    public void setNaipeId(Long naipeId) {
+    public void setNaipeId(Integer naipeId) {
         this.naipeId = naipeId;
     }
 

@@ -20,14 +20,14 @@ public class UserEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private UUID userId;
     
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "naipe_id")
-    private NaipeEntity naipe;
+    private NaipeEntity naipeEntity;
 
     @Column(name = "data_nascimento")
     private Date dataNascimento;
@@ -42,7 +42,7 @@ public class UserEntity {
     
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_role",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"), // id usuário
             inverseJoinColumns = @JoinColumn(name = "role_id") // id role 
     )
@@ -71,11 +71,11 @@ public class UserEntity {
     }
 
     public NaipeEntity getNaipe() {
-        return naipe;
+        return naipeEntity;
     }
 
     public void setNaipe(NaipeEntity naipe) {
-        this.naipe = naipe;
+        this.naipeEntity = naipe;
     }
 
     public Date getDataNascimento() {

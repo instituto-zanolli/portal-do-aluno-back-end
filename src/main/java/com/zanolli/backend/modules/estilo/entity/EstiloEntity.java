@@ -8,7 +8,7 @@ public class EstiloEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "estilo_id")
+    @Column(name = "id")
     private Long estiloId;
 
     @Column(unique = true)

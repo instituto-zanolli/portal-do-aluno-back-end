@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.naipe.controller;
 
-import com.zanolli.backend.modules.naipe.dto.NaipeRequestDto;
+import com.zanolli.backend.modules.naipe.dto.NaipeRegisterRequestDto;
 import com.zanolli.backend.modules.naipe.dto.NaipeResponseDto;
 import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
 import com.zanolli.backend.modules.naipe.service.NaipeService;
@@ -23,8 +23,8 @@ public class NaipeController {
     }
 
     @PostMapping()
-    public ResponseEntity<NaipeResponseDto> registerNaipeController(@RequestBody @Valid NaipeRequestDto naipeRequestDto) {
-        NaipeEntity saved = naipeService.registerNaipeService(naipeRequestDto);
+    public ResponseEntity<NaipeResponseDto> registerNaipeController(@RequestBody @Valid NaipeRegisterRequestDto naipeRegisterRequestDto) {
+        NaipeEntity saved = naipeService.registerNaipeService(naipeRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NaipeResponseDto(message));
     }

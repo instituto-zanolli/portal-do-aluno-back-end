@@ -1,6 +1,6 @@
 package com.zanolli.backend.modules.estilo.controller;
 
-import com.zanolli.backend.modules.estilo.dto.EstiloRequestDto;
+import com.zanolli.backend.modules.estilo.dto.EstiloRegisterRequestDto;
 import com.zanolli.backend.modules.estilo.dto.EstiloResponseDto;
 import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.estilo.service.EstiloService;
@@ -21,8 +21,8 @@ public class EstiloController {
     }
 
     @PostMapping()
-    public ResponseEntity<EstiloResponseDto> registerEstiloController(@RequestBody @Valid EstiloRequestDto estiloRequestDto) {
-        EstiloEntity saved = estiloService.registerEstiloService(estiloRequestDto);
+    public ResponseEntity<EstiloResponseDto> registerEstiloController(@RequestBody @Valid EstiloRegisterRequestDto estiloRegisterRequestDto) {
+        EstiloEntity saved = estiloService.registerEstiloService(estiloRegisterRequestDto);
         String message = saved.getDescription() + " inserido com sucesso.";
         return ResponseEntity.status(HttpStatus.CREATED).body(new EstiloResponseDto(message));
     }
