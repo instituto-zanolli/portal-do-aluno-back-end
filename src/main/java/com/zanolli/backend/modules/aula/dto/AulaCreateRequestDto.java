@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
-public record AulaRequestDto(
+public record AulaCreateRequestDto(
         @NotNull(message = "Campo obrigatório.")
         String name,
 
