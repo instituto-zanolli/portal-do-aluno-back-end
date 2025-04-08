@@ -38,4 +38,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionFilters> handleEstiloConflict(EstiloConflictException exception) {
         return buildConflictResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(EstiloNotFoundException.class)
+    public ResponseEntity<ExceptionFilters> handleEstiloNotFound(EstiloNotFoundException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
 }

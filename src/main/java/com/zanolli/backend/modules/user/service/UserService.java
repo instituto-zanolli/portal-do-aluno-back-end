@@ -33,7 +33,7 @@ public class UserService {
     public UserEntity createUserService(@RequestBody @Valid UserCreateRequestDto userCreateRequestDto) {
         Optional<UserEntity> validationEmail = userRepository.findByEmail(userCreateRequestDto.email());
         
-        Optional<NaipeEntity> naipeEntity = naipeRepository.findById(userCreateRequestDto.naipeId());
+        Optional<NaipeEntity> naipeEntity = naipeRepository.findById(userCreateRequestDto.naipeId().longValue());
         
         RoleEntity roleAluno = roleRepository.findByDescription(RoleEntity.Values.aluno.name()).orElseThrow(() -> new RuntimeException("Role não encontrada."));
 

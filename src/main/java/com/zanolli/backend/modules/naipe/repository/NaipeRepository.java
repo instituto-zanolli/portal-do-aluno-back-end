@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface NaipeRepository extends JpaRepository<NaipeEntity, Integer> {
+public interface NaipeRepository extends JpaRepository<NaipeEntity, Long> {
     Optional<NaipeEntity> findByDescription(String description);
 }
