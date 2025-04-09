@@ -1,10 +1,9 @@
-package com.zanolli.backend.modules.aula.dto;
+package com.zanolli.backend.modules.aula.dtos.aula;
 
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.UUID;
 
 public record AulaCreateRequestDto(
         @NotNull(message = "Campo obrigatório.")

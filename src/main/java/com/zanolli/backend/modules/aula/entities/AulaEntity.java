@@ -1,4 +1,4 @@
-package com.zanolli.backend.modules.aula.entity;
+package com.zanolli.backend.modules.aula.entities;
 
 import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.user.entities.UserEntity;

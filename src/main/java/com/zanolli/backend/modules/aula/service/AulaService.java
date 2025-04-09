@@ -1,26 +1,23 @@
 package com.zanolli.backend.modules.aula.service;
 
-import com.zanolli.backend.modules.aula.dto.AulaCreateRequestDto;
-import com.zanolli.backend.modules.aula.dto.AulaDto;
-import com.zanolli.backend.modules.aula.dto.AulaFeedResponseDto;
-import com.zanolli.backend.modules.aula.dto.AulaResponseDto;
-import com.zanolli.backend.modules.aula.entity.AulaEntity;
-import com.zanolli.backend.modules.aula.repository.AulaRepository;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaCreateRequestDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaRepresentationDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaFeedResponseDto;
+import com.zanolli.backend.modules.aula.entities.AulaEntity;
+import com.zanolli.backend.modules.aula.entities.InscricaoEntity;
+import com.zanolli.backend.modules.aula.repositories.AulaRepository;
+import com.zanolli.backend.modules.aula.repositories.InscricaoRepository;
 import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.estilo.repository.EstiloRepository;
 import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.repositories.UserRepository;
 import com.zanolli.backend.shared.exceptions.EstiloConflictException;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.security.interfaces.RSAPublicKey;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,11 +29,13 @@ public class AulaService {
     private final AulaRepository aulaRepository;
     private final EstiloRepository estiloRepository;
     private final UserRepository userRepository;
+    private final InscricaoRepository inscricaoRepository;
     
-    public AulaService (AulaRepository aulaRepository, EstiloRepository estiloRepository, UserRepository userRepository) {
+    public AulaService (AulaRepository aulaRepository, EstiloRepository estiloRepository, UserRepository userRepository, InscricaoRepository inscricaoRepository) {
         this.aulaRepository = aulaRepository;
         this.estiloRepository = estiloRepository;
         this.userRepository = userRepository;
+        this.inscricaoRepository = inscricaoRepository;
     }
     
     public AulaEntity createAulaService(@RequestBody @Valid AulaCreateRequestDto aulaCreateRequestDto, JwtAuthenticationToken jwt) {
@@ -64,9 +63,9 @@ public class AulaService {
     public AulaFeedResponseDto feedService(int page, int pageSize) {
         var aulas = aulaRepository.findAll(PageRequest.of(page, pageSize));
 
-        List<AulaDto> aulaDtoList = aulas
+        List<AulaRepresentationDto> aulaRepresentationDtoList = aulas
                 .stream()
-                .map(aulaEntity -> new AulaDto(
+                .map(aulaEntity -> new AulaRepresentationDto(
                         aulaEntity.getName(),
                         aulaEntity.getDescription(),
                         aulaEntity.getEstilo().getDescription(),
@@ -76,17 +75,17 @@ public class AulaService {
                 ))
                 .collect(Collectors.toList());
 
-        return new AulaFeedResponseDto(aulaDtoList, page, pageSize);
+        return new AulaFeedResponseDto(aulaRepresentationDtoList, page, pageSize);
     }
 
-    public AulaDto findAulaByIdService(UUID id) {
+    public AulaRepresentationDto findAulaByIdService(UUID id) {
         Optional<AulaEntity> aulaEntity = aulaRepository.findById(id);
 
         if(aulaEntity.isEmpty()) {
             System.out.println("Aula não encontrada");
         }
 
-        AulaDto aulaDto = new AulaDto(
+        AulaRepresentationDto aulaRepresentationDto = new AulaRepresentationDto(
                 aulaEntity.get().getName(),
                 aulaEntity.get().getDescription(),
                 aulaEntity.get().getEstilo().getDescription(),
@@ -95,6 +94,21 @@ public class AulaService {
                 aulaEntity.get().getEndTime()
         );
 
-        return aulaDto;
+        return aulaRepresentationDto;
+    }
+
+    public InscricaoEntity inscreverAlunoAulaService(UUID id, JwtAuthenticationToken jwt) {
+        Optional<UserEntity> userEntity = userRepository.findById(UUID.fromString(jwt.getName()));
+        Optional<AulaEntity> aulaEntity = aulaRepository.findById(id);
+        
+        if(userEntity.isEmpty() || aulaEntity.isEmpty()) {
+            throw new Error("Não foi possível realizar inscrição.");
+        }
+
+        InscricaoEntity inscricaoEntity = new InscricaoEntity();
+        inscricaoEntity.setUserEntity(userEntity.get());
+        inscricaoEntity.setAulaEntity(aulaEntity.get());
+        
+        return inscricaoRepository.save(inscricaoEntity);
     }
 }

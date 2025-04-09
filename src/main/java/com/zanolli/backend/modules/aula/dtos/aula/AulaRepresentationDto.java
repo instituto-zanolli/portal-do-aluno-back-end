@@ -1,12 +1,11 @@
-package com.zanolli.backend.modules.aula.dto;
+package com.zanolli.backend.modules.aula.dtos.aula;
 
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalTime;
 import java.util.Date;
 
-public class AulaDto extends RepresentationModel<AulaDto> {
+public class AulaRepresentationDto extends RepresentationModel<AulaRepresentationDto> {
     private String name;
     private String description;
     private String estiloDescription;
@@ -14,7 +13,7 @@ public class AulaDto extends RepresentationModel<AulaDto> {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public AulaDto(String name, String description, String estiloDescription, Date date, LocalTime startTime, LocalTime endTime) {
+    public AulaRepresentationDto(String name, String description, String estiloDescription, Date date, LocalTime startTime, LocalTime endTime) {
         this.name = name;
         this.description = description;
         this.estiloDescription = estiloDescription;

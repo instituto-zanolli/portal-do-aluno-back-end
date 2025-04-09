@@ -31,8 +31,8 @@ public class RoleEntity {
     }
     
     public enum Values {
-        aluno(1L),
-        professor(2L);
+        ALUNO(1L),
+        PROFESSOR(2L);
         
         long roleId;
         

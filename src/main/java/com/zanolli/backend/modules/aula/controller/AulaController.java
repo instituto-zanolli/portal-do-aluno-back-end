@@ -1,10 +1,10 @@
 package com.zanolli.backend.modules.aula.controller;
 
-import com.zanolli.backend.modules.aula.dto.AulaCreateRequestDto;
-import com.zanolli.backend.modules.aula.dto.AulaDto;
-import com.zanolli.backend.modules.aula.dto.AulaFeedResponseDto;
-import com.zanolli.backend.modules.aula.dto.AulaResponseDto;
-import com.zanolli.backend.modules.aula.entity.AulaEntity;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaCreateRequestDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaFeedResponseDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaRepresentationDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaResponseDto;
+import com.zanolli.backend.modules.aula.entities.AulaEntity;
 import com.zanolli.backend.modules.aula.service.AulaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -46,8 +45,15 @@ public class AulaController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ALUNO') or hasAuthority('SCOPE_PROFESSOR')")
-    public ResponseEntity<AulaDto> findAulaByIdController(@PathVariable("id") UUID id) {
-        AulaDto aulaDto = aulaService.findAulaByIdService(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(aulaDto);
+    public ResponseEntity<AulaRepresentationDto> findAulaByIdController(@PathVariable("id") UUID id) {
+        AulaRepresentationDto AulaRepresentationDto = aulaService.findAulaByIdService(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(AulaRepresentationDto);
+    }
+    
+    @PostMapping("/inscrever/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ALUNO') or hasAuthority('SCOPE_PROFESSOR')")
+    public  ResponseEntity<String> inscreverAlunoAulaController(@PathVariable("id") UUID id, JwtAuthenticationToken jwt) {
+        aulaService.inscreverAlunoAulaService(id, jwt);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Inscrito com sucesso.");
     }
 }
