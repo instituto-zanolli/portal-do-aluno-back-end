@@ -6,6 +6,8 @@ private.key=classpath:
 role.aluno=
 role.professor=
 
+origin.client=
+
 #spring.sql.init.mode=always
 #spring.jpa.defer-datasource-initialization=true
 
