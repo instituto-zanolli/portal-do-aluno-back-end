@@ -102,7 +102,11 @@ public class AulaService {
         Optional<AulaEntity> aulaEntity = aulaRepository.findById(id);
         
         if(userEntity.isEmpty() || aulaEntity.isEmpty()) {
-            throw new Error("Não foi possível realizar inscrição.");
+            throw new IllegalStateException("Não foi possível realizar inscrição.");
+        }
+
+        if(inscricaoRepository.existsByAulaEntityAndUserEntity(aulaEntity.get(), userEntity.get())) {
+            throw new IllegalStateException("Aluno já matriculado na aula.");
         }
 
         InscricaoEntity inscricaoEntity = new InscricaoEntity();
