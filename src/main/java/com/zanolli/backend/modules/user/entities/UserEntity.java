@@ -51,6 +51,9 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id") // id role 
     )
     private Set<RoleEntity> role;
+
+    @Column(nullable = true)
+    private String imageProfileUrl;
     
     @CreationTimestamp
     private Instant created_at;
@@ -74,12 +77,12 @@ public class UserEntity {
         this.name = name;
     }
 
-    public NaipeEntity getNaipe() {
+    public NaipeEntity getNaipeEntity() {
         return naipeEntity;
     }
 
-    public void setNaipe(NaipeEntity naipe) {
-        this.naipeEntity = naipe;
+    public void setNaipeEntity(NaipeEntity naipeEntity) {
+        this.naipeEntity = naipeEntity;
     }
 
     public Date getDataNascimento() {
@@ -120,6 +123,14 @@ public class UserEntity {
 
     public void setRole(Set<RoleEntity> role) {
         this.role = role;
+    }
+
+    public String getImageProfileUrl() {
+        return imageProfileUrl;
+    }
+
+    public void setImageProfileUrl(String imageProfileUrl) {
+        this.imageProfileUrl = imageProfileUrl;
     }
 
     public Instant getCreated_at() {

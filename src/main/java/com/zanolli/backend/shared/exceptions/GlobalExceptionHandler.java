@@ -43,4 +43,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionFilters> handleEstiloNotFound(EstiloNotFoundException exception) {
         return buildConflictResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(ImgNullException.class)
+    public ResponseEntity<ExceptionFilters> handleImgNullException(ImgNullException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
 }
