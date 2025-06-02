@@ -7,6 +7,7 @@ target/
 application.properties
 app.key
 app.pub
+fotos
 
 ### STS ###
 .apt_generated

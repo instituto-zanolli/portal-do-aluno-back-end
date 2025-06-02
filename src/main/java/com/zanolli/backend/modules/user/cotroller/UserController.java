@@ -1,5 +1,6 @@
 package com.zanolli.backend.modules.user.cotroller;
 
+import com.zanolli.backend.modules.user.dto.CardResponseDto;
 import com.zanolli.backend.modules.user.dto.UserCreateRequestDto;
 import com.zanolli.backend.modules.user.dto.UserResponseDto;
 import com.zanolli.backend.modules.user.service.UserService;
@@ -32,5 +33,11 @@ public class UserController {
         userService.uploadImgProfileService(file, jwt);
         String message = "imagem inserida com sucesso!";
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(message));
+    }
+
+    @GetMapping("/profile/card")
+    public ResponseEntity<CardResponseDto> card(JwtAuthenticationToken jwt) {
+        CardResponseDto card = userService.card(jwt);
+        return ResponseEntity.status(HttpStatus.OK).body(card);
     }
 }

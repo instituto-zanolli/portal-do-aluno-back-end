@@ -2,6 +2,7 @@ package com.zanolli.backend.modules.user.service;
 
 import com.zanolli.backend.modules.naipe.entity.NaipeEntity;
 import com.zanolli.backend.modules.naipe.repository.NaipeRepository;
+import com.zanolli.backend.modules.user.dto.CardResponseDto;
 import com.zanolli.backend.modules.user.dto.UserCreateRequestDto;
 import com.zanolli.backend.modules.user.dto.UserResponseDto;
 import com.zanolli.backend.modules.user.entities.RoleEntity;
@@ -96,5 +97,24 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public CardResponseDto card(JwtAuthenticationToken jwt) {
+        Optional<UserEntity> user = userRepository.findById(UUID.fromString(jwt.getName()));
+
+        if(user.get().getImageProfileUrl().isEmpty()) {
+            throw new ImgNullException("Atenção: é necessário cadastrar uma foto de perfil.");
+        }
+
+        CardResponseDto responseDto = new CardResponseDto(
+                user.get().getName(),
+                user.get().getNaipeEntity().getDescription(),
+                user.get().getDataNascimento(),
+                user.get().getEmail(),
+                Optional.ofNullable(user.get().getPeso()),
+                user.get().getImageProfileUrl()
+        );
+
+        return responseDto;
     }
 }
