@@ -99,7 +99,7 @@ public class UserService {
         }
     }
 
-    public CardResponseDto card(JwtAuthenticationToken jwt) {
+    public CardResponseDto cardService(JwtAuthenticationToken jwt) {
         Optional<UserEntity> user = userRepository.findById(UUID.fromString(jwt.getName()));
 
         if(user.get().getImageProfileUrl().isEmpty()) {

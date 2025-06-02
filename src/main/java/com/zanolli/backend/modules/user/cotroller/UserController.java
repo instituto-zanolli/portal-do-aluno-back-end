@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @GetMapping("/profile/card")
-    public ResponseEntity<CardResponseDto> card(JwtAuthenticationToken jwt) {
-        CardResponseDto card = userService.card(jwt);
+    public ResponseEntity<CardResponseDto> cardController(JwtAuthenticationToken jwt) {
+        CardResponseDto card = userService.cardService(jwt);
         return ResponseEntity.status(HttpStatus.OK).body(card);
     }
 }

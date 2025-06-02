@@ -56,4 +56,12 @@ public class AulaController {
         aulaService.inscreverAlunoAulaService(id, jwt);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Inscrito com sucesso.");
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_PROFESSOR')")
+    public ResponseEntity<String> deleteAulaController(@PathVariable("id") UUID id, JwtAuthenticationToken jwt) {
+        aulaService.deleteAulaService(id, jwt);
+        String message = "Aula deletada com sucesso.";
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

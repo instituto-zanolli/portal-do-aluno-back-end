@@ -11,6 +11,7 @@ import com.zanolli.backend.modules.estilo.entity.EstiloEntity;
 import com.zanolli.backend.modules.estilo.repository.EstiloRepository;
 import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.repositories.UserRepository;
+import com.zanolli.backend.shared.exceptions.AulaNotFoundException;
 import com.zanolli.backend.shared.exceptions.EstiloConflictException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,6 +68,7 @@ public class AulaService {
         List<AulaRepresentationDto> aulaRepresentationDtoList = aulas
                 .stream()
                 .map(aulaEntity -> new AulaRepresentationDto(
+                        aulaEntity.getAulaId(),
                         aulaEntity.getName(),
                         aulaEntity.getDescription(),
                         aulaEntity.getEstilo().getDescription(),
@@ -86,6 +89,7 @@ public class AulaService {
         }
 
         AulaRepresentationDto aulaRepresentationDto = new AulaRepresentationDto(
+                aulaEntity.get().getAulaId(),
                 aulaEntity.get().getName(),
                 aulaEntity.get().getDescription(),
                 aulaEntity.get().getEstilo().getDescription(),
@@ -114,5 +118,17 @@ public class AulaService {
         inscricaoEntity.setAulaEntity(aulaEntity.get());
         
         return inscricaoRepository.save(inscricaoEntity);
+    }
+
+    public void deleteAulaService(UUID id, JwtAuthenticationToken jwt) {
+
+        Optional<AulaEntity> aula = aulaRepository.findById(id);
+
+        if(aula.isEmpty()) {
+            throw new AulaNotFoundException("Atenção: essa aula não existe.");
+        }
+
+        inscricaoRepository.deleteByAulaId(id);
+        aulaRepository.deleteById(id);
     }
 }

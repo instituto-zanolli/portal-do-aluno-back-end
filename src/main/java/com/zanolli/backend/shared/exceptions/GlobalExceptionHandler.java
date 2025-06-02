@@ -1,5 +1,6 @@
 package com.zanolli.backend.shared.exceptions;
 
+import com.zanolli.backend.modules.aula.service.AulaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,6 +47,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImgNullException.class)
     public ResponseEntity<ExceptionFilters> handleImgNullException(ImgNullException exception) {
+        return buildConflictResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler(AulaNotFoundException.class)
+    public ResponseEntity<ExceptionFilters> handleAulaNotFoundException(AulaNotFoundException exception) {
         return buildConflictResponse(exception.getMessage());
     }
 }

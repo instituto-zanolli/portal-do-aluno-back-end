@@ -4,8 +4,10 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.UUID;
 
-public class AulaRepresentationDto extends RepresentationModel<AulaRepresentationDto> {
+public class AulaRepresentationDto {
+    private UUID id;
     private String name;
     private String description;
     private String estiloDescription;
@@ -13,13 +15,22 @@ public class AulaRepresentationDto extends RepresentationModel<AulaRepresentatio
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public AulaRepresentationDto(String name, String description, String estiloDescription, Date date, LocalTime startTime, LocalTime endTime) {
+    public AulaRepresentationDto(UUID id, String name, String description, String estiloDescription, Date date, LocalTime startTime, LocalTime endTime) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.estiloDescription = estiloDescription;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
