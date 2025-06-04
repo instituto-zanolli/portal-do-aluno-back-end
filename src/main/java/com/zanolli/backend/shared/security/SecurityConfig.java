@@ -33,12 +33,21 @@ public class SecurityConfig {
 
     @Value("${private.key}")
     private RSAPrivateKey privateKey;
+
+    public static final String[] swagger = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-resources"
+    };
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                        .requestMatchers(swagger).permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
