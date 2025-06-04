@@ -1,9 +1,6 @@
 package com.zanolli.backend.modules.aula.controller;
 
-import com.zanolli.backend.modules.aula.dtos.aula.AulaCreateRequestDto;
-import com.zanolli.backend.modules.aula.dtos.aula.AulaFeedResponseDto;
-import com.zanolli.backend.modules.aula.dtos.aula.AulaRepresentationDto;
-import com.zanolli.backend.modules.aula.dtos.aula.AulaResponseDto;
+import com.zanolli.backend.modules.aula.dtos.aula.*;
 import com.zanolli.backend.modules.aula.entities.AulaEntity;
 import com.zanolli.backend.modules.aula.service.AulaService;
 import jakarta.validation.Valid;
@@ -55,6 +52,13 @@ public class AulaController {
     public  ResponseEntity<String> inscreverAlunoAulaController(@PathVariable("id") UUID id, JwtAuthenticationToken jwt) {
         aulaService.inscreverAlunoAulaService(id, jwt);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Inscrito com sucesso.");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateAulaController(@PathVariable("id") UUID id, @RequestBody AulaUpdateRequestDto aulaUpdateRequestDto, JwtAuthenticationToken jwt) {
+        aulaService.updateAulaService(id, aulaUpdateRequestDto, jwt);
+        String message = "Aula atualizada com sucesso.";
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
     @DeleteMapping("/{id}")

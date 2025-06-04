@@ -3,6 +3,7 @@ package com.zanolli.backend.modules.aula.service;
 import com.zanolli.backend.modules.aula.dtos.aula.AulaCreateRequestDto;
 import com.zanolli.backend.modules.aula.dtos.aula.AulaRepresentationDto;
 import com.zanolli.backend.modules.aula.dtos.aula.AulaFeedResponseDto;
+import com.zanolli.backend.modules.aula.dtos.aula.AulaUpdateRequestDto;
 import com.zanolli.backend.modules.aula.entities.AulaEntity;
 import com.zanolli.backend.modules.aula.entities.InscricaoEntity;
 import com.zanolli.backend.modules.aula.repositories.AulaRepository;
@@ -13,13 +14,13 @@ import com.zanolli.backend.modules.user.entities.UserEntity;
 import com.zanolli.backend.modules.user.repositories.UserRepository;
 import com.zanolli.backend.shared.exceptions.AulaNotFoundException;
 import com.zanolli.backend.shared.exceptions.EstiloConflictException;
+import com.zanolli.backend.shared.exceptions.NotAllowedException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -118,6 +119,27 @@ public class AulaService {
         inscricaoEntity.setAulaEntity(aulaEntity.get());
         
         return inscricaoRepository.save(inscricaoEntity);
+    }
+
+    public AulaEntity updateAulaService(UUID id, AulaUpdateRequestDto aulaUpdateRequestDto, JwtAuthenticationToken jwt) {
+        Optional<AulaEntity> aula = aulaRepository.findById(id);
+
+        if(aula.isEmpty()) {
+            throw new AulaNotFoundException("Aula não encontrada.");
+        }
+
+        AulaEntity aulaEntity = aula.get();
+        aulaEntity.setName(aulaUpdateRequestDto.name());
+        aulaEntity.setDescription(aulaUpdateRequestDto.description());
+        aulaEntity.setDate(aulaUpdateRequestDto.date());
+        aulaEntity.setStartTime(aulaUpdateRequestDto.startTime());
+        aulaEntity.setEndTime(aulaUpdateRequestDto.endTime());
+
+        if(!aula.get().getProfessor().getUserId().equals(UUID.fromString(jwt.getName()))) {
+            throw new NotAllowedException("Atenção: você não tem permissão para atualizar essa aula.");
+        }
+
+        return aulaRepository.save(aulaEntity);
     }
 
     public void deleteAulaService(UUID id, JwtAuthenticationToken jwt) {
