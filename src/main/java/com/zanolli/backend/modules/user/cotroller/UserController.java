@@ -1,7 +1,9 @@
 package com.zanolli.backend.modules.user.cotroller;
 
+import com.zanolli.backend.modules.aula.dtos.aula.AulaDto;
 import com.zanolli.backend.modules.user.dto.CardResponseDto;
 import com.zanolli.backend.modules.user.dto.UserCreateRequestDto;
+import com.zanolli.backend.modules.user.dto.UserProfileDto;
 import com.zanolli.backend.modules.user.dto.UserResponseDto;
 import com.zanolli.backend.modules.user.service.UserService;
 import jakarta.validation.Valid;
@@ -39,5 +41,11 @@ public class UserController {
     public ResponseEntity<CardResponseDto> cardController(JwtAuthenticationToken jwt) {
         CardResponseDto card = userService.cardService(jwt);
         return ResponseEntity.status(HttpStatus.OK).body(card);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDto> profileController(UserProfileDto userProfileDto, JwtAuthenticationToken jwt) {
+        UserProfileDto userProfile = userService.profileService(userProfileDto, jwt);
+        return ResponseEntity.status(HttpStatus.OK).body(userProfile);
     }
 }

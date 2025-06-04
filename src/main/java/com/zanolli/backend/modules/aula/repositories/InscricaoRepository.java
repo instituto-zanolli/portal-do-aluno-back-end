@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface InscricaoRepository extends JpaRepository<InscricaoEntity, UUID> {
@@ -18,4 +19,7 @@ public interface InscricaoRepository extends JpaRepository<InscricaoEntity, UUID
     @Modifying
     @Query("DELETE FROM InscricaoEntity i WHERE i.aulaEntity.id = :aulaId")
     void deleteByAulaId(@Param("aulaId") UUID aulaId);
+
+    @Query("SELECT i FROM InscricaoEntity i JOIN FETCH i.aulaEntity WHERE i.userEntity.userId = :userId")
+    List<InscricaoEntity> findAllByUserId(@Param("userId") UUID userId);
 }
