@@ -7,6 +7,8 @@ origin.client=
 
 img.dir=
 
+springdoc.override-with-generic-response=false
+
 role.aluno=
 role.professor=
 

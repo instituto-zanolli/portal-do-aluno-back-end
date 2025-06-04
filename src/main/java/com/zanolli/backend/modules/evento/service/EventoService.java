@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -30,33 +32,48 @@ public class EventoService {
     @Value("${img.dir}")
     private String DIR;
 
-    public EventoEntity createEventoService(MultipartFile file, EventoCreateRequestDto eventoCreateRequestDto, JwtAuthenticationToken jwt) {
-        Optional<UserEntity> userEntity = userRepository.findById(UUID.fromString(jwt.getName()));
+    public EventoEntity createEventoService(EventoCreateRequestDto eventoCreateRequestDto, JwtAuthenticationToken jwt) {
+        UserEntity user = userRepository.findById(UUID.fromString(jwt.getName()))
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if(file.isEmpty()) {
-            throw new ImgNullException("Imagem não encontrada.");
+        EventoEntity evento = new EventoEntity();
+        evento.setTitle(eventoCreateRequestDto.title());
+        evento.setDescription(eventoCreateRequestDto.description());
+        evento.setDate(eventoCreateRequestDto.date());
+        evento.setProfessor(user);
+
+        return eventoRepository.save(evento);
+    }
+
+    public EventoEntity uploadImgEventoService(Long eventoId, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new ImgNullException("imagem não encontrada.");
         }
 
         try {
             int number = new Random().nextInt(10000);
 
             File dir = new File(this.DIR);
-            if(!dir.exists()) {
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
 
             String filePath = this.DIR + number + "_" + file.getOriginalFilename();
             file.transferTo(new File(filePath));
 
-            System.out.println("testeeeeeeeee " + filePath);
+            Optional<EventoEntity> eventoEntity = eventoRepository.findById(eventoId);
+            if (eventoEntity.isEmpty()) {
+                throw new RuntimeException("evento não encontrado.");
+            }
 
-            EventoEntity evento = new EventoEntity();
-            evento.setTitle(eventoCreateRequestDto.title());
-            evento.setDescription(eventoCreateRequestDto.description());
-            evento.setDate(eventoCreateRequestDto.date());
+            EventoEntity evento = eventoEntity.get();
+
+            String imgEventoUrl = evento.getImgEventoUrl();
+            if (imgEventoUrl != null && !imgEventoUrl.isEmpty()) {
+                Files.deleteIfExists(Path.of(imgEventoUrl));
+            }
+
             evento.setImgEventoUrl(filePath);
-            evento.setProfessor(userEntity.get());
-
             return eventoRepository.save(evento);
         } catch (Exception e) {
             throw new RuntimeException(e);

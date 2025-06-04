@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/evento")
 public class EventoController {
@@ -24,13 +26,16 @@ public class EventoController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('SCOPE_PROFESSOR')")
-    public ResponseEntity<String> createEventoController(
-            @RequestPart("file") MultipartFile file,
-            @RequestPart("evento") @Valid EventoCreateRequestDto eventoCreateRequestDto,
-            JwtAuthenticationToken jwt) {
-
-        EventoEntity evento = eventoService.createEventoService(file, eventoCreateRequestDto, jwt);
-        String message = "Evento cadastrado com sucesso.";
+    public ResponseEntity<String> createEventoController(@RequestBody @Valid EventoCreateRequestDto eventoCreateRequestDto, JwtAuthenticationToken jwt) {
+        EventoEntity evento = eventoService.createEventoService(eventoCreateRequestDto, jwt);
+        String message = "evento cadastrado com sucesso.";
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    }
+
+    @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_PROFESSOR')")
+    public ResponseEntity<String> uploadImagem(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        eventoService.uploadImgEventoService(id, file);
+        return ResponseEntity.status(HttpStatus.OK).body("imagem enviada com sucesso.");
     }
 }
